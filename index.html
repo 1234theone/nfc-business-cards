@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>TapCard - NFC Digital Business Cards</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #111;
+      color: white;
+    }
+
+    header {
+      padding: 20px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #181818;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .logo span {
+      color: #00d4ff;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .admin-btn {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 8px;
+      background: #00d4ff;
+      font-weight: bold;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 80px 20px;
+    }
+
+    .hero h1 {
+      font-size: 50px;
+      margin-bottom: 15px;
+    }
+
+    .hero p {
+      color: #aaa;
+      font-size: 18px;
+    }
+
+    .section {
+      display: none;
+      padding: 40px 20px;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .form-box {
+      background: #222;
+      padding: 30px;
+      border-radius: 15px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      margin-top: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    .create-btn {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      background: #00d4ff;
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    .cards {
+      margin-top: 30px;
+    }
+
+    .saved-card {
+      background: #222;
+      padding: 20px;
+      margin-bottom: 15px;
+      border-radius: 12px;
+    }
+
+    .saved-card button {
+      margin-top: 10px;
+      padding: 10px;
+      border: none;
+      border-radius: 7px;
+      background: #00d4ff;
+      font-weight: bold;
+    }
+
+    .digital-card {
+      max-width: 400px;
+      margin: 40px auto;
+      background: white;
+      color: #111;
+      border-radius: 25px;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .profile {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: #ddd;
+      margin: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 45px;
+    }
+
+    .digital-card h1 {
+      margin-bottom: 5px;
+    }
+
+    .digital-card p {
+      color: #666;
+    }
+
+    .card-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 25px;
+    }
+
+    .card-buttons a {
+      padding: 14px;
+      background: #111;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+
+    .back {
+      margin-top: 20px;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #777;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">
+    Tap<span>Card</span>
+  </div>
+
+  <button class="admin-btn" onclick="showAdmin()">
+    Admin
+  </button>
+</header>
+
+
+<!-- HOME PAGE -->
+
+<div id="home">
+
+  <section class="hero">
+
+    <h1>NFC Digital Business Cards</h1>
+
+    <p>
+      Share your contact information instantly with one tap.
+    </p>
+
+  </section>
+
+</div>
+
+
+<!-- ADMIN PAGE -->
+
+<div id="admin" class="section">
+
+  <h1>Create a New Card</h1>
+
+  <div class="form-box">
+
+    <label>Name</label>
+    <input id="name" placeholder="John Smith">
+
+    <label>Job Title</label>
+    <input id="job" placeholder="Plumber">
+
+    <label>Business Name</label>
+    <input id="business" placeholder="Smith Plumbing">
+
+    <label>Phone Number</label>
+    <input id="phone" placeholder="+44...">
+
+    <label>Email</label>
+    <input id="email" placeholder="email@example.com">
+
+    <label>WhatsApp Number</label>
+    <input id="whatsapp" placeholder="447...">
+
+    <label>Website</label>
+    <input id="website" placeholder="https://...">
+
+    <button class="create-btn" onclick="createCard()">
+      ➕ Create Digital Card
+    </button>
+
+  </div>
+
+  <div class="cards">
+
+    <h2>Your Cards</h2>
+
+    <div id="cardList"></div>
+
+  </div>
+
+</div>
+
+
+<!-- DIGITAL CARD -->
+
+<div id="cardPage" class="section">
+
+  <div class="digital-card">
+
+    <div class="profile">👤</div>
+
+    <h1 id="cardName"></h1>
+
+    <p id="cardJob"></p>
+
+    <p id="cardBusiness"></p>
+
+    <div class="card-buttons">
+
+      <a id="callBtn">📞 Call</a>
+
+      <a id="whatsappBtn">💬 WhatsApp</a>
+
+      <a id="emailBtn">📧 Email</a>
+
+      <a id="websiteBtn">🌐 Website</a>
+
+    </div>
+
+  </div>
+
+  <button class="back" onclick="goHome()">
+    ← Back Home
+  </button>
+
+</div>
+
+
+<footer>
+
+  © 2026 TapCard
+
+</footer>
+
+
+<script>
+
+let cards = JSON.parse(localStorage.getItem("tapCards")) || [];
+
+
+/* SHOW ADMIN */
+
+function showAdmin() {
+
+  document.getElementById("home").style.display = "none";
+
+  document.getElementById("admin").classList.add("active");
+
+  document.getElementById("cardPage").classList.remove("active");
+
+  displayCards();
+
+}
+
+
+/* CREATE CARD */
+
+function createCard() {
+
+  const card = {
+
+    id: Date.now(),
+
+    name: document.getElementById("name").value,
+
+    job: document.getElementById("job").value,
+
+    business: document.getElementById("business").value,
+
+    phone: document.getElementById("phone").value,
+
+    email: document.getElementById("email").value,
+
+    whatsapp: document.getElementById("whatsapp").value,
+
+    website: document.getElementById("website").value
+
+  };
+
+
+  if (!card.name) {
+
+    alert("Please enter a name!");
+
+    return;
+
+  }
+
+
+  cards.push(card);
+
+
+  localStorage.setItem("tapCards", JSON.stringify(cards));
+
+
+  alert("Digital card created! 🎉");
+
+
+  document.querySelectorAll("input").forEach(input => {
+
+    input.value = "";
+
+  });
+
+
+  displayCards();
+
+}
+
+
+/* DISPLAY CARDS */
+
+function displayCards() {
+
+  const list = document.getElementById("cardList");
+
+  list.innerHTML = "";
+
+
+  cards.forEach(card => {
+
+    list.innerHTML += `
+
+      <div class="saved-card">
+
+        <h3>${card.name}</h3>
+
+        <p>${card.business}</p>
+
+        <button onclick="openCard(${card.id})">
+
+          Open Card
+
+        </button>
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+
+/* OPEN CARD */
+
+function openCard(id) {
+
+  const card = cards.find(card => card.id === id);
+
+
+  document.getElementById("admin").classList.remove("active");
+
+  document.getElementById("cardPage").classList.add("active");
+
+
+  document.getElementById("cardName").innerText = card.name;
+
+  document.getElementById("cardJob").innerText = card.job;
+
+  document.getElementById("cardBusiness").innerText = card.business;
+
+
+  document.getElementById("callBtn").href = "tel:" + card.phone;
+
+  document.getElementById("whatsappBtn").href =
+    "https://wa.me/" + card.whatsapp;
+
+  document.getElementById("emailBtn").href =
+    "mailto:" + card.email;
+
+  document.getElementById("websiteBtn").href =
+    card.website;
+
+}
+
+
+/* GO HOME */
+
+function goHome() {
+
+  document.getElementById("home").style.display = "block";
+
+  document.getElementById("admin").classList.remove("active");
+
+  document.getElementById("cardPage").classList.remove("active");
+
+}
+
+</script>
+
+</body>
+</html>
