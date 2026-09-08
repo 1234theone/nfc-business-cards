@@ -491,7 +491,7 @@ const params = new URLSearchParams(window.location.search);
 const cardId = params.get("card");
 
 if (cardId) {
-    openCard(Number(cardId));
+    openCard(cardId));
 } else {
     displayCards();
 }
