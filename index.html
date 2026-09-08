@@ -422,7 +422,11 @@ function displayCards() {
 
 
 /* OPEN CARD */
-
+function showAdmin() {
+    document.getElementById("home").style.display = "none";
+    document.getElementById("admin").classList.add("active");
+    document.getElementById("cardPage").classList.remove("active");
+}
 function openCard(id) {
 history.pushState({}, "", "?card=" + id);
   const card = cards.find(card => card.id === id);
