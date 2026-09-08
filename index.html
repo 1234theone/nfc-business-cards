@@ -338,54 +338,52 @@ function showAdmin() {
 
 function createCard() {
 
-  const card = {
+  async function createCard() {
 
-    id: Date.now(),
+    const card = {
+        name: document.getElementById("name").value,
+        job: document.getElementById("job").value,
+        business: document.getElementById("business").value,
+        phone: document.getElementById("phone").value,
+        email: document.getElementById("email").value,
+        whatsapp: document.getElementById("whatsapp").value,
+        website: document.getElementById("website").value
+    };
 
-    name: document.getElementById("name").value,
+    if (!card.name) {
+        alert("Please enter a name!");
+        return;
+    }
 
-    job: document.getElementById("job").value,
+    const { data, error } = await supabaseClient
+        .from("cards")
+        .insert([card])
+        .select();
 
-    business: document.getElementById("business").value,
+    if (error) {
+        console.error(error);
+        alert("Error creating card: " + error.message);
+        return;
+    }
 
-    phone: document.getElementById("phone").value,
+    const newCard = data[0];
 
-    email: document.getElementById("email").value,
+    const link =
+        window.location.origin +
+        window.location.pathname +
+        "?card=" + newCard.id;
 
-    whatsapp: document.getElementById("whatsapp").value,
+    alert(
+        "🎉 Digital card created!\n\n" +
+        "Your NFC link is:\n\n" +
+        link
+    );
 
-    website: document.getElementById("website").value
+    document.querySelectorAll("#admin input").forEach(input => {
+        input.value = "";
+    });
 
-  };
-
-
-  if (!card.name) {
-
-    alert("Please enter a name!");
-
-    return;
-
-  }
-
-
-  cards.push(card);
-
-
-  localStorage.setItem("tapCards", JSON.stringify(cards));
-
-
-  alert("Digital card created! 🎉");
-
-
-  document.querySelectorAll("input").forEach(input => {
-
-    input.value = "";
-
-  });
-
-
-  displayCards();
-
+    await loadCards();
 }
 
 
