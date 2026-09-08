@@ -426,7 +426,7 @@ function displayCards() {
 /* OPEN CARD */
 
 function openCard(id) {
-
+history.pushState({}, "", "?card=" + id);
   const card = cards.find(card => card.id === id);
 
 
