@@ -477,12 +477,18 @@ async function loadCards() {
     console.error(error);
     return;
   }
+cards = data;
 
-  cards = data;
+const params = new URLSearchParams(window.location.search);
+const cardId = params.get("card");
 
-  displayCards();
-
-}loadCards();
+if (cardId) {
+    openCard(cardId);
+} else {
+    displayCards();
+}
+}
+  loadcards();
 </script>
   
 </body>
