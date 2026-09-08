@@ -452,7 +452,18 @@ history.pushState({}, "", "?card=" + id);
     card.website;
 
 }
+/* SHOW ADMIN */
+function showAdmin() {
+    window.history.pushState({}, "", window.location.pathname);
 
+    document.getElementById("home").style.display = "none";
+
+    document.getElementById("admin").classList.add("active");
+
+    document.getElementById("cardPage").classList.remove("active");
+
+    loadCards();
+}
 
 /* GO HOME */
 
