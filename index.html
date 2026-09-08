@@ -302,9 +302,21 @@
 </footer>
 
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
 
-let cards = JSON.parse(localStorage.getItem("tapCards")) || [];
+const SUPABASE_URL = "https://rcqhtvzbezthmsnnlrne.supabase.co";
+
+const SUPABASE_KEY = "sb_publishable_Sf3fnqdz-IP6Xc5kVo_vPg_Q4ef8KBW";
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+let cards = [];
+
 
 
 /* SHOW ADMIN */
@@ -455,8 +467,23 @@ function goHome() {
   document.getElementById("cardPage").classList.remove("active");
 
 }
+async function loadCards() {
 
+  const { data, error } = await supabaseClient
+    .from("cards")
+    .select("*");
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  cards = data;
+
+  displayCards();
+
+}loadCards();
 </script>
-
+  
 </body>
 </html>
